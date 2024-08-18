@@ -20,7 +20,7 @@ public class RegisterReq {
     private String email;
     @NotBlank
     private String password;
-    private boolean isAdmin;
+
     private String fullName;
     private LocalDate dateOfBirth;
     private String address;
