@@ -1,5 +1,7 @@
-package lazy.demo.auth_service.model;
-import jakarta.persistence.*;
+package lazy.demo.auth_service.dto.req;
+
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,28 +9,22 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(name = "users_uq_username", columnNames = "username"),
-        @UniqueConstraint(name = "users_uq_email", columnNames = "email")
-})
-public class User {
+public class RegisterReq {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-
+    @NotBlank
     private String username;
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
     private boolean isAdmin;
-
     private String fullName;
     private LocalDate dateOfBirth;
     private String address;
     private String picture;
+
 }

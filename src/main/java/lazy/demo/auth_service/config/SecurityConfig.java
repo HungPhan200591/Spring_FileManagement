@@ -1,5 +1,6 @@
-package lazy.demo.auth_service.config.security;
+package lazy.demo.auth_service.config;
 
+import jakarta.servlet.DispatcherType;
 import lazy.demo.auth_service.config.security.jwt.JwtAuthenticationEntryPoint;
 import lazy.demo.auth_service.config.security.jwt.JwtAuthenticationFilter;
 import lazy.demo.auth_service.config.security.impl.UserDetailsServiceImpl;
@@ -35,9 +36,11 @@ public class SecurityConfig {
         return http
                 // Tắt CSRF cho đơn giản, bạn có thể bật nếu cần thiết
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 // Cho phép tất cả truy cập vào các endpoint không cần xác thực
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/**", "/oauth2/**").permitAll()
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD).permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated() // Yêu cầu xác thực cho tất cả các yêu cầu khác
                 )

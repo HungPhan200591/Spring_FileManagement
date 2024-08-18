@@ -29,6 +29,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,
                 @NonNull FilterChain chain) throws java.io.IOException, jakarta.servlet.ServletException {
 
+        final String requestURI = request.getRequestURI();
+
+        if (requestURI.contains("/auth/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;

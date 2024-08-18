@@ -1,12 +1,14 @@
 package lazy.demo.auth_service.controller;
 import lazy.demo.auth_service.dto.req.LoginReq;
 import lazy.demo.auth_service.config.security.jwt.JwtService;
+import lazy.demo.auth_service.dto.req.RegisterReq;
 import lazy.demo.auth_service.dto.req.TokenRefreshReq;
 import lazy.demo.auth_service.dto.resp.GenericResponse;
 import lazy.demo.auth_service.model.User;
 import lazy.demo.auth_service.config.security.jwt.JwtResponse;
 import lazy.demo.auth_service.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/auth")
+public class AuthController extends BaseController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final ModelMapper modelMapper;
 
     @PostMapping("/login")
     public ResponseEntity<GenericResponse<?>> login(@RequestBody LoginReq loginReq) {
@@ -38,8 +41,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<GenericResponse<?>>register(@RequestBody User user) {
-        User newUser = userService.registerUser(user);
+    public ResponseEntity<GenericResponse<?>>register(@RequestBody RegisterReq registerReq) {
+        User newUser = userService.registerUser(modelMapper.map(registerReq, User.class));
         return ResponseEntity.ok(GenericResponse.success(newUser));
     }
 
