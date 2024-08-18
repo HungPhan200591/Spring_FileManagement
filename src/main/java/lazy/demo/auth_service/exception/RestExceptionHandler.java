@@ -1,7 +1,6 @@
 package lazy.demo.auth_service.exception;
 
 import jakarta.persistence.EntityNotFoundException;
-import lazy.demo.auth_service.dto.resp.ErrorEnum;
 import lazy.demo.auth_service.dto.resp.GenericResponse;
 import lazy.demo.auth_service.dto.resp.api_error.ApiError;
 import lombok.extern.slf4j.Slf4j;

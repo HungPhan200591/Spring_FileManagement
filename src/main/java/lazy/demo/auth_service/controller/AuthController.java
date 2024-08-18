@@ -1,11 +1,12 @@
 package lazy.demo.auth_service.controller;
-import lazy.demo.auth_service.dto.req.LoginReq;
+
+import lazy.demo.auth_service.config.security.jwt.JwtResponse;
 import lazy.demo.auth_service.config.security.jwt.JwtService;
+import lazy.demo.auth_service.dto.req.LoginReq;
 import lazy.demo.auth_service.dto.req.RegisterReq;
 import lazy.demo.auth_service.dto.req.TokenRefreshReq;
 import lazy.demo.auth_service.dto.resp.GenericResponse;
 import lazy.demo.auth_service.model.User;
-import lazy.demo.auth_service.config.security.jwt.JwtResponse;
 import lazy.demo.auth_service.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
-public class AuthController extends BaseController {
+@RequestMapping("/api/v1/auth")
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
@@ -30,7 +31,7 @@ public class AuthController extends BaseController {
     private final ModelMapper modelMapper;
 
     @PostMapping("/login")
-    public ResponseEntity<GenericResponse<?>> login(@RequestBody LoginReq loginReq) {
+    public ResponseEntity<GenericResponse<JwtResponse>> login(@RequestBody LoginReq loginReq) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword())
         );
@@ -41,7 +42,8 @@ public class AuthController extends BaseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<GenericResponse<?>>register(@RequestBody RegisterReq registerReq) {
+    public ResponseEntity<GenericResponse<User>>register(@RequestBody RegisterReq registerReq) {
+        System.out.println("registerReq: " + registerReq);
         User newUser = userService.registerUser(modelMapper.map(registerReq, User.class));
         return ResponseEntity.ok(GenericResponse.success(newUser));
     }

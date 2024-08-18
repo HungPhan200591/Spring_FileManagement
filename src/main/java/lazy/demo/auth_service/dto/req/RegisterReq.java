@@ -1,6 +1,5 @@
 package lazy.demo.auth_service.dto.req;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

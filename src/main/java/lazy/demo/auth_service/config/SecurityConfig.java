@@ -1,9 +1,8 @@
 package lazy.demo.auth_service.config;
 
-import jakarta.servlet.DispatcherType;
+import lazy.demo.auth_service.config.security.impl.UserDetailsServiceImpl;
 import lazy.demo.auth_service.config.security.jwt.JwtAuthenticationEntryPoint;
 import lazy.demo.auth_service.config.security.jwt.JwtAuthenticationFilter;
-import lazy.demo.auth_service.config.security.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,29 +25,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         return http
                 // Tắt CSRF cho đơn giản, bạn có thể bật nếu cần thiết
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 // Cho phép tất cả truy cập vào các endpoint không cần xác thực
                 .authorizeHttpRequests(authorize -> authorize
-                        .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD).permitAll()
-                        .requestMatchers("/api/v1/auth/**", "/oauth2/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated() // Yêu cầu xác thực cho tất cả các yêu cầu khác
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Cấu hình OAuth2 login
                 .oauth2Login(_ -> {
                 })
+
                 // Sử dụng JWT Authentication
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
