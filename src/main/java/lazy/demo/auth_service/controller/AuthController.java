@@ -53,6 +53,4 @@ public class AuthController {
         String newAccessToken = jwtService.refreshAccessToken(request.getRefreshToken());
         return ResponseEntity.ok(newAccessToken);
     }
-
-
 }
