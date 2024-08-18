@@ -1,20 +1,21 @@
 package lazy.demo.auth_service.config.security.jwt;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
 public class JwtService {
-
-    private final SecretKey secretKey;
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -25,13 +26,6 @@ public class JwtService {
     @Value("${jwt.refresh-expiration}")
     private int jwtRefreshExpiration;
 
-    public JwtService() {
-        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public JwtService(String jwtSecret) {
-        this.secretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-    }
 
     // Tạo JWT từ thông tin người dùng (authentication)
     public String generateToken(String username) {
@@ -56,7 +50,7 @@ public class JwtService {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
-                .signWith(secretKey)
+                .signWith(getSignKey(jwtSecret))
                 .compact();
     }
 
@@ -77,7 +71,7 @@ public class JwtService {
     private boolean isTokenExpired(String token) {
         try {
             var claims = Jwts.parserBuilder()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(getSignKey(jwtSecret))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
@@ -93,7 +87,7 @@ public class JwtService {
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+                .setSigningKey(getSignKey(jwtSecret))
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -109,4 +103,9 @@ public class JwtService {
         }
         throw new RuntimeException("Refresh token không hợp lệ.");
     }
+
+    private Key getSignKey(String jwtSecret) {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+
 }
