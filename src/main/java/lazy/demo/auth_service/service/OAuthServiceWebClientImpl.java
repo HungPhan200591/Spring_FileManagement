@@ -52,6 +52,9 @@ public class OAuthServiceWebClientImpl implements OAuthService {
     @Value("${spring.security.oauth2.client.provider.google.jwk-set-uri}")
     private String jwkSetUri;
 
+    @Value("${spring.security.oauth2.client.provider.google.user-info-uri}")
+    private String userInfoUri;
+
     private final WebClient webClient;
     private final UserService userService;
     private final TokenService tokenService;
@@ -66,6 +69,7 @@ public class OAuthServiceWebClientImpl implements OAuthService {
     @Override
     public LoginResp loginWithGoogle(OAuthGoogleLoginReq request, String ipAddress) {
         GoogleOAuthTokenResp googleOAuthTokenResp = getGoogleOAuthTokenResp(request.getCode());
+//        System.out.println(getGoogleUserInfo(googleOAuthTokenResp.getAccessToken()));
         Claims claims = decodeAndVerifyToken(googleOAuthTokenResp.getIdToken());
         User user = userService.saveOrUpdateUserOAuth(claims, UserProvider.Google);
 
@@ -153,6 +157,16 @@ public class OAuthServiceWebClientImpl implements OAuthService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to decode and verify token", e);
         }
+    }
+
+    public String getGoogleUserInfo(String accessToken) {
+
+        return webClient.get()
+                .uri(userInfoUri)
+                .headers(headers -> headers.setBearerAuth(accessToken))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
 }
