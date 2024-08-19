@@ -2,18 +2,16 @@ package lazy.demo.auth_service.service;
 
 import lazy.demo.auth_service.config.security.jwt.JwtService;
 import lazy.demo.auth_service.config.security.jwt.JwtTokenDTO;
-import lazy.demo.auth_service.dto.req.DeviceInfoDTO;
+import lazy.demo.auth_service.dto.req.LoginDeviceInfoReq;
 import lazy.demo.auth_service.dto.resp.LoginResp;
 import lazy.demo.auth_service.model.Token;
 import lazy.demo.auth_service.model.User;
 import lazy.demo.auth_service.repository.TokenRepository;
-import lazy.demo.auth_service.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class TokenService {
         tokenRepository.save(token);
     }
 
-    public Token saveToken(String authenticatedUsername, DeviceInfoDTO deviceInfo, String ipAddress) {
+    public Token saveToken(String authenticatedUsername, LoginDeviceInfoReq deviceInfo, String ipAddress) {
 
         String deviceId = deviceInfo.getDeviceId();
         String deviceType = deviceInfo.getDeviceType();

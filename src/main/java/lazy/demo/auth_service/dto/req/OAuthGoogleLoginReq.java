@@ -12,5 +12,5 @@ public class OAuthGoogleLoginReq {
     private String code;
 
     @JsonProperty("device_info")
-    private DeviceInfoDTO deviceInfo;
+    private LoginDeviceInfoReq deviceInfo;
 }
