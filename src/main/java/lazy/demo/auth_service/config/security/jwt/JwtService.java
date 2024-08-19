@@ -25,7 +25,6 @@ public class JwtService {
     @Value("${jwt.refresh-expiration}")
     private int jwtRefreshExpiration;
 
-
     // Tạo JWT từ thông tin người dùng (authentication)
     public JwtTokenDTO generateToken(String username) {
         return generateTokenWithUsername(username, jwtExpiration);

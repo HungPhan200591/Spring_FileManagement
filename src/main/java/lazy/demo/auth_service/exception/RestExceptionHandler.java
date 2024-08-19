@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.reactive.function.UnsupportedMediaTypeException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -35,8 +36,19 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<GenericResponse<ApiError>> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Unsupported media type: " + ex.getMessage(), ex);
         return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(UnsupportedMediaTypeException.class)
+    protected ResponseEntity<GenericResponse<ApiError>> handleUnsupportedMediaTypeException(UnsupportedMediaTypeException ex, WebRequest request) {
+        ApiError apiError = new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ex.getMessage(), ex);
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<GenericResponse<ApiError>> handleDataIntegrityViolation(Exception ex, WebRequest request) {
+        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex));
     }
 
     /**
@@ -191,5 +203,7 @@ public class RestExceptionHandler {
     private ResponseEntity<GenericResponse<ApiError>> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(GenericResponse.fail(apiError), apiError.getStatus());
     }
+
+
 
 }

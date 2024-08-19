@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 // Cho phép tất cả truy cập vào các endpoint không cần xác thực
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/auth/**", "/login/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/oauth2/**", "/oauth2/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
