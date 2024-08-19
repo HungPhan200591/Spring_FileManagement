@@ -112,7 +112,6 @@ public class TokenService {
         return new LoginResp(newAccToken, newRefreshToken);
     }
 
-    @Transactional
     public void cleanUpRevokedToken() {
         tokenRepository.deleteByRevokeTrue();
     }
