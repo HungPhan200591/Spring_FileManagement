@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;
 import jakarta.validation.ConstraintViolation;
-import lazy.demo.auth_service.dto.resp.ErrorEnum;
+import lazy.demo.auth_service.enums.ErrorEnum;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -35,6 +35,12 @@ public class ApiError {
     public ApiError(HttpStatus status) {
         this();
         this.status = status;
+    }
+
+    public ApiError(HttpStatus status, String message) {
+        this();
+        this.status = status;
+        this.message = "Unexpected error";
     }
 
     public ApiError(HttpStatus status, Throwable ex) {

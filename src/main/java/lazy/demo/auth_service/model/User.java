@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.time.LocalDate;
 
@@ -30,6 +31,7 @@ public class User {
 
     private String username;
     private String email;
+
     private String password;
     private boolean isAdmin;
 
@@ -37,4 +39,5 @@ public class User {
     private LocalDate dateOfBirth;
     private String address;
     private String picture;
+
 }

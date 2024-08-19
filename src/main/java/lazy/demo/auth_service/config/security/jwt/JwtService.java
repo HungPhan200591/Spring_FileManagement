@@ -2,6 +2,8 @@ package lazy.demo.auth_service.config.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lazy.demo.auth_service.dto.resp.LoginResp;
+import lazy.demo.auth_service.model.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,17 +27,17 @@ public class JwtService {
 
 
     // Tạo JWT từ thông tin người dùng (authentication)
-    public String generateToken(String username) {
+    public JwtTokenDTO generateToken(String username) {
         return generateTokenWithUsername(username, jwtExpiration);
     }
 
     // Tạo refresh token
-    public String generateRefreshToken(String username) {
+    public JwtTokenDTO generateRefreshToken(String username) {
         return generateTokenWithUsername(username, jwtRefreshExpiration);
     }
 
     // Tạo JWT với username, được dùng cho cả access token và refresh token
-    public String generateTokenWithUsername(String username, int expiration) {
+    public JwtTokenDTO generateTokenWithUsername(String username, int expiration) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime expirationTime = now.plusSeconds(expiration);
 
@@ -43,12 +45,13 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("createdDate", now.toString());
         claims.put("expirationDate", expirationTime.toString());
-
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .signWith(getSignKey(jwtSecret))
                 .compact();
+
+        return new JwtTokenDTO(token, expirationTime);
     }
 
     public boolean validateJwtToken(String token, String authenticatedUsername) {
@@ -91,18 +94,11 @@ public class JwtService {
                 .getSubject();
     }
 
-    // Làm mới access token bằng cách sử dụng refresh token
-    public String refreshAccessToken(String refreshToken) {
 
-        if (validateJwtRefreshToken(refreshToken)) {
-            String username = getUserNameFromJwtToken(refreshToken);
-            return generateTokenWithUsername(username, jwtExpiration);
-        }
-        throw new RuntimeException("Refresh token không hợp lệ.");
-    }
 
     private Key getSignKey(String jwtSecret) {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
+
 
 }

@@ -1,4 +1,4 @@
-package lazy.demo.auth_service.dto.resp;
+package lazy.demo.auth_service.enums;
 
 import lombok.Getter;
 

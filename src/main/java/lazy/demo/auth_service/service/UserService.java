@@ -19,6 +19,11 @@ public class UserService {
         return userRepository.findByUsernameOrEmail(username, email);
     }
 
+    public User findUserByUserNameOrEmail(String username, String email) {
+        return findByUserNameOrEmail(username, email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

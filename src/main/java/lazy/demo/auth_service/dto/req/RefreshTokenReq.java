@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TokenRefreshReq {
-    @JsonProperty("refresh_token")
+public class RefreshTokenReq {
     private String refreshToken;
 }

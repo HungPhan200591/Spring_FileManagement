@@ -5,16 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class LoginReq {
-    private String username;
-    private String password;
-
-    @JsonProperty("device_info")
-    private DeviceInfoDTO deviceInfo;
+public class DeviceInfoDTO {
+    private String deviceId;
+    private String deviceType;
+    private String operatingSystem;
+    private String userAgent;
 }
