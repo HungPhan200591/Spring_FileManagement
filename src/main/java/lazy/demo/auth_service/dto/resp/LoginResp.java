@@ -1,6 +1,5 @@
 package lazy.demo.auth_service.dto.resp;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

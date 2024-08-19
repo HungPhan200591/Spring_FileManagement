@@ -1,12 +1,11 @@
 package lazy.demo.auth_service.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lazy.demo.auth_service.dto.resp.LoginResp;
-import lazy.demo.auth_service.config.security.jwt.JwtService;
 import lazy.demo.auth_service.dto.req.LoginReq;
-import lazy.demo.auth_service.dto.req.RegisterReq;
 import lazy.demo.auth_service.dto.req.RefreshTokenReq;
+import lazy.demo.auth_service.dto.req.RegisterReq;
 import lazy.demo.auth_service.dto.resp.GenericResponse;
+import lazy.demo.auth_service.dto.resp.LoginResp;
 import lazy.demo.auth_service.model.Token;
 import lazy.demo.auth_service.model.User;
 import lazy.demo.auth_service.service.TokenService;

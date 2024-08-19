@@ -2,9 +2,6 @@ package lazy.demo.auth_service.config.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lazy.demo.auth_service.config.security.impl.UserDetailsImpl;
-import lazy.demo.auth_service.dto.resp.LoginResp;
-import lazy.demo.auth_service.model.Token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
