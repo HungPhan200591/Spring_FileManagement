@@ -42,7 +42,6 @@ public class OAuthController {
     @PostMapping("/google")
     public ResponseEntity<?> loginWithGoogle(@RequestBody OAuthGoogleLoginReq oAuthGoogleLoginReq,
                                              HttpServletRequest request) {
-        System.out.println(oAuthGoogleLoginReq);
         String ipAddress = request.getRemoteAddr();
         LoginResp loginResp = oAuthService.loginWithGoogle(oAuthGoogleLoginReq, ipAddress);
         return ResponseEntity.ok(GenericResponse.success(loginResp));

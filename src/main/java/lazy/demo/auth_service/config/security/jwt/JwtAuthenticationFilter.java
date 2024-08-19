@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lazy.demo.auth_service.config.security.impl.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
@@ -44,9 +45,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //Nếu username tồn tại và trong security context chưa có authentication
         if (Objects.nonNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
 
-            if (jwtService.validateJwtToken(token, userDetails.getUsername())) {
+            if (jwtService.validateJwtToken(token, userDetails.getUsername(), userDetails.getEmail())) {
 
                 // Tạo đối tượng UsernamePasswordAuthenticationToken với thông tin người dùng
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

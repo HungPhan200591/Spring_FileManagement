@@ -2,6 +2,7 @@ package lazy.demo.auth_service.config.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lazy.demo.auth_service.config.security.impl.UserDetailsImpl;
 import lazy.demo.auth_service.dto.resp.LoginResp;
 import lazy.demo.auth_service.model.Token;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,10 +54,10 @@ public class JwtService {
         return new JwtTokenDTO(token, expirationTime);
     }
 
-    public boolean validateJwtToken(String token, String authenticatedUsername) {
+    public boolean validateJwtToken(String token, String authUserName, String authEmail) {
         String usernameFromToken = getUserNameFromJwtToken(token);
 
-        boolean equalsUsername = usernameFromToken.equals(authenticatedUsername);
+        boolean equalsUsername = usernameFromToken.equals(authUserName) || usernameFromToken.equals(authEmail);
         boolean tokenExpired = isTokenExpired(token);
 
         return equalsUsername && !tokenExpired;

@@ -7,12 +7,16 @@ import io.jsonwebtoken.Jwts;
 import lazy.demo.auth_service.dto.external.google.GoogleOAuthTokenResp;
 import lazy.demo.auth_service.dto.req.OAuthGoogleLoginReq;
 import lazy.demo.auth_service.dto.resp.LoginResp;
+import lazy.demo.auth_service.enums.UserProvider;
 import lazy.demo.auth_service.model.Token;
 import lazy.demo.auth_service.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -63,7 +67,11 @@ public class OAuthServiceWebClientImpl implements OAuthService {
     public LoginResp loginWithGoogle(OAuthGoogleLoginReq request, String ipAddress) {
         GoogleOAuthTokenResp googleOAuthTokenResp = getGoogleOAuthTokenResp(request.getCode());
         Claims claims = decodeAndVerifyToken(googleOAuthTokenResp.getIdToken());
-        User user = userService.saveOrUpdateUserOAuth(claims);
+        User user = userService.saveOrUpdateUserOAuth(claims, UserProvider.Google);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         Token token = tokenService.saveToken(user.getEmail(), request.getDeviceInfo(), ipAddress);
         return LoginResp.builder()
                 .token(token.getToken())
