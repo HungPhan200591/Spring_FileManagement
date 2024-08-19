@@ -6,12 +6,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lazy.demo.auth_service.enums.UserProvider;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
+import java.security.Provider;
 import java.time.LocalDate;
 
 @Entity
@@ -32,9 +34,11 @@ public class User {
     private String username;
     private String email;
 
+    @JsonIgnore
     private String password;
     private boolean isAdmin;
 
+    private UserProvider provider;
     private String fullName;
     private LocalDate dateOfBirth;
     private String address;

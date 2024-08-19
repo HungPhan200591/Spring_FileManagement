@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TokenService {
     private final TokenRepository tokenRepository;
     private final UserService userService;

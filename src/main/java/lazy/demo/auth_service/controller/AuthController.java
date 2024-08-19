@@ -32,14 +32,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final JwtService jwtService;
     private final TokenService tokenService;
     private final ModelMapper modelMapper;
 
     @PostMapping("/login")
     public ResponseEntity<GenericResponse<LoginResp>> login(@RequestBody LoginReq loginReq, HttpServletRequest request) {
         String ipAddress = request.getRemoteAddr();
-        System.out.println("IP Address: " + ipAddress);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginReq.getUsername(), loginReq.getPassword())
         );
