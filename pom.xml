@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>lazy.demo</groupId>
-    <artifactId>Spring_FileManagement</artifactId>
+    <artifactId>image_mngt_auth_service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Spring_FileManagement</name>
-    <description>Spring_FileManagement</description>
+    <name>image_mngt_auth_service</name>
+    <description>image_mngt_auth_service</description>
     <url/>
     <licenses>
         <license/>
