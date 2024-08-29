@@ -1,6 +1,8 @@
 package lazy.demo.auth_service.service;
 
 import io.jsonwebtoken.Claims;
+import lazy.demo.auth_service.config.security.jwt.JwtService;
+import lazy.demo.auth_service.dto.resp.UserDetailResp;
 import lazy.demo.auth_service.enums.UserProvider;
 import lazy.demo.auth_service.model.User;
 import lazy.demo.auth_service.repository.UserRepository;
@@ -19,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public Optional<User> findByUserNameOrEmail(String username, String email) {
         return userRepository.findByUsernameOrEmail(username, email);
@@ -60,5 +63,11 @@ public class UserService {
 
     public List<User> getListUser() {
         return userRepository.findAllByOrderByUserId();
+    }
+
+    public UserDetailResp getUserProfile(String token) {
+        String username = jwtService.getUserNameFromJwtToken(token.substring(7)); // Remove "Bearer " prefix
+        Optional<UserDetailResp> userDetail = userRepository.findUserDetailByUsername(username, username);
+        return userDetail.orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }
