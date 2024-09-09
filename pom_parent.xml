@@ -9,6 +9,14 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
+    <!-- Thừa hưởng từ Spring Boot Starter Parent -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <!-- Thống nhất các phiên bản thư viện, Java, Spring Boot, v.v. -->
     <properties>
         <!-- Phiên bản Java chung -->
@@ -32,15 +40,16 @@
     <!-- Quản lý các dependency phiên bản chung -->
     <dependencyManagement>
         <dependencies>
-            <!-- Spring Boot Starter Parent -->
+            <!-- Các dependency của Spring Cloud -->
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring-boot.version}</version>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
-            <!-- Các phiên bản thư viện chung khác -->
+            <!-- Các dependency khác -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-api</artifactId>
@@ -76,13 +85,6 @@
                 <artifactId>javafaker</artifactId>
                 <version>${faker.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -107,5 +109,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

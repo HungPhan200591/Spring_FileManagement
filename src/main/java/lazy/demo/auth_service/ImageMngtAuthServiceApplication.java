@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class SpringFileManagementApplication {
+public class ImageMngtAuthServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringFileManagementApplication.class, args);
+        SpringApplication.run(ImageMngtAuthServiceApplication.class, args);
     }
 
 }
