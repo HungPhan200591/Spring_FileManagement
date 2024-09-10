@@ -3,6 +3,7 @@ Sử dụng httpOnly Cookies thay vì Local Storage:
 Thay vì lưu JWT trong local storage, bạn nên lưu nó trong cookie với cờ httpOnly. Điều này sẽ giúp bảo vệ JWT khỏi các cuộc tấn công XSS vì JavaScript trên frontend không thể truy cập được cookie này.
 Bỏ qua bước xác minh token với Google (nếu có thể):
 
+
 Nếu Google đã cung cấp một id_token có chữ ký hợp lệ và bạn có thể xác minh trực tiếp thông qua public key của Google, bạn không cần gửi yêu cầu khác đến Google để xác minh.
 
 Sử dụng Refresh Token một cách an toàn:
